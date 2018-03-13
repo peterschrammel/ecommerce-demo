@@ -81,7 +81,7 @@
                         <img th:src="@{/images/}+${cartItem.key.photo}" th:alt="${cartItem.key.category.name}" width="100%"/>
                     </div>
                     <div class="col-7">
-                        <div><span th:text="${cartItem.value}"/>x <b th:text="${cartItem.key.collection.name}"></b></div>
+                        <div><span th:text="${cartItem.value.quantity}"/>x <b th:text="${cartItem.key.collection.name}"></b></div>
                         <div th:text="${cartItem.key.name}"/>
                         <div th:text="${cartItem.key.size}"/>
                     </div>

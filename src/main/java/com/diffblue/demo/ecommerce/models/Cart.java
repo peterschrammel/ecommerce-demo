@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Cart {
 
-  private Map<Product, Integer> cartItems;
+  private Map<Product, CartItem> cartItems;
   private double subtotal;
   private double shipping;
   private double tax;
@@ -33,9 +33,9 @@ public class Cart {
 
   public void addProduct(Product product) {
     if (cartItems.get(product) != null) {
-      cartItems.put(product, cartItems.get(product) + 1);
+      cartItems.replace(product, new CartItem(cartItems.get(product).getQuantity() + 1));
     } else {
-      cartItems.put(product, 1);
+      cartItems.put(product, new CartItem(1));
     }
     double productPrice = product.getPrice();
     tax = checkTax(product,productPrice);
@@ -43,7 +43,7 @@ public class Cart {
     setTotal(tax, shipping);
   }
 
-  public Map<Product, Integer> getProducts() {
+  public Map<Product, CartItem> getProducts() {
     return cartItems;
   }
 
@@ -80,7 +80,7 @@ public class Cart {
   public void updateProductQuantity(Product product, int newQty, String size) {
     product.setSize(size);
     if (cartItems.containsKey(product)) {
-      int currQty = cartItems.get(product);
+      int currQty = cartItems.get(product).getQuantity();
       int diff = newQty - currQty;
 
       double totalToUpdate = (double) diff;
@@ -89,8 +89,11 @@ public class Cart {
       this.setSubtotal(this.subtotal + totalToUpdate);
       if (newQty == 0) {
         cartItems.remove(product);
+      } else if (newQty < 0) {
+        cartItems.replace(product, new CartItem(newQty, "Desired quantity is invalid"));
+        String prod = product.getCollection().getName() + " (" + product.getName() + ")";
       } else {
-        cartItems.replace(product, newQty);
+        cartItems.replace(product, new CartItem(newQty));
       }
       setTotal(tax, shipping);
     }
@@ -108,6 +111,20 @@ public class Cart {
     return tax;
   }
 
+  /**
+  * Returns TRUE if the cart has products with an error.
+  */
+  public Boolean checkInvalid() {
+    Boolean errorFound = false;
+    for (Map.Entry<Product, CartItem> item : cartItems.entrySet()) {
+      if (!item.getValue().getError().isEmpty()) {
+        errorFound = true;
+        break;
+      }
+    }
+    return errorFound;
+  }
+  
   public double getShipping() {
     return shipping;
   }

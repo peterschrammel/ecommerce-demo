@@ -1,5 +1,6 @@
 package com.diffblue.demo.ecommerce.controllers;
 
+import com.diffblue.demo.ecommerce.Application;
 import com.diffblue.demo.ecommerce.forms.AddressForm;
 // Copyright 2016-2018 Diffblue Limited. All rights reserved.
 
@@ -54,11 +55,18 @@ public class CheckoutController {
   @RequestMapping("/checkout")
   public String viewCheckoutPage(Map<String, Object> model, HttpSession session,
                                  CustomerForm customerForm) {
-    if (session.getAttribute("shoppingCart") != null) {
+    try {
+      if (session.getAttribute("shoppingCart") == null) {
+        throw new Exception("Shopping Cart does not exist");
+      }
       Cart shoppingCart = (Cart) session.getAttribute("shoppingCart");
+      if (shoppingCart.checkInvalid()) {
+        throw new Exception("Shopping Cart contains invalid items");
+      }
       model.put("cart", shoppingCart);
       return "Checkout";
-    } else {
+    } catch (Exception e) {
+      Application.log.info(e.getMessage() + " - Aborting checkout");
       return "redirect:/cart";
     }
   }
@@ -150,7 +158,8 @@ public class CheckoutController {
                                 customer.getPhoneNumber(), savedAddress));
 
 
-      shoppingCart.getProducts().forEach((product,quantity)-> {
+      shoppingCart.getProducts().forEach((product,cartitem)-> {
+        Integer quantity = cartitem.getQuantity();
         OrderItem savedOrderItem = orderItemRepo.save(new OrderItem(savedOrder, product, quantity));
       } );
 
