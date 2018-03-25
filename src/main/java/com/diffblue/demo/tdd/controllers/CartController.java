@@ -39,11 +39,12 @@ public class CartController {
 			int productId = Integer.parseInt(productParam);
 			Product product = this.productRepo.findById(productId);
 			if (product != null) {
+				assert (productId == product.getId()); // assume that Spring works correctly
 				Integer found = cartItems.get(product.getId());
 				if (found == null) {
-        				cartItems.put(productId, 1);
+        	cartItems.put(productId, 1);
 				} else {
-        				cartItems.replace(productId, found + 1);
+        	cartItems.replace(productId, found + 1);
 				}
 			} else {
 				throw new IllegalArgumentException("Product id not found: " + productParam);
