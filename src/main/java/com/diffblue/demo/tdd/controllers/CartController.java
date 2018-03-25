@@ -44,6 +44,7 @@ public class CartController {
 				if (found == null) {
         	cartItems.put(productId, 1);
 				} else {
+          assert (found > 0);
         	cartItems.replace(productId, found + 1);
 				}
 			} else {
