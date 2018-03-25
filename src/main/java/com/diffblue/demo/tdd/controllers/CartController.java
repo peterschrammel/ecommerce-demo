@@ -38,9 +38,13 @@ public class CartController {
 		try {
 			int productId = Integer.parseInt(productParam);
 			Product product = this.productRepo.findById(productId);
-
-			// TBD now!
-
+			int newQuantity = 1;
+			Integer found = cartItems.get(product.getId());
+			if (found != null) {
+				newQuantity += found;
+				cartItems.remove(productId);
+			}
+			cartItems.put(productId, newQuantity);
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid product id: " + productParam);
 		}
