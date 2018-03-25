@@ -182,7 +182,7 @@ public class CartControllerTest {
     }
 
     /* Act */
-    thrown.expect(NullPointerException.class);
+    thrown.expect(IllegalArgumentException.class);
     cartController.addProductToCart(productParam, cartItems);
   }
 
