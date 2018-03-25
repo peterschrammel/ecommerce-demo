@@ -99,10 +99,7 @@ public class CartControllerTest {
     HashMap<Integer, Integer> cartItems = new HashMap<>();
 
     /* Act */
+    thrown.expect(IllegalArgumentException.class);
     cartController.addProductToCart(productParam, cartItems);
-
-    /* Assert result */
-    HashMap<Integer, Integer> hashMap = new HashMap<>();
-    Assert.assertEquals(hashMap, cartItems);
   }
 }
