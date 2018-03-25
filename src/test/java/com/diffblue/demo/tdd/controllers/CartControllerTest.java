@@ -165,7 +165,7 @@ public class CartControllerTest {
     Product mockProduct = new Product();
     mockProduct.setDescription("");
     mockProduct.setPrice(0.0);
-    mockProduct.setId(7);
+    mockProduct.setId(0);
     mockProduct.setName("");
     ProductRepository productRepository =
         (ProductRepository) Mockito.mock(ProductRepository.class);
@@ -176,7 +176,7 @@ public class CartControllerTest {
     CartController cartController = new CartController(productRepository);
     String productParam = "0";
     HashMap<Integer, Integer> cartItems = new HashMap<>();
-    cartItems.put(0, 0);
+    cartItems.put(0, 2);
 
     /* Act */
     cartController.addProductToCart(productParam, cartItems);
@@ -184,7 +184,7 @@ public class CartControllerTest {
     /* Assert result */
     Assert.assertNotNull(cartItems);
     HashMap<Integer, Integer> hashMap = new HashMap<>();
-    hashMap.put(7, 1);
+    hashMap.put(0, 3);
     Assert.assertEquals(hashMap, cartItems);
   }
 }
