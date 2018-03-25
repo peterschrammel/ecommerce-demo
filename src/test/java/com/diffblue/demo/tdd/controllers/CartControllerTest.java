@@ -216,7 +216,7 @@ public class CartControllerTest {
     CartController cartController = new CartController(productRepository);
     String productParam = "0";
     HashMap<Integer, Integer> cartItems = new HashMap<Integer, Integer>();
-    cartItems.put(0, 0);
+    cartItems.put(0, 2);
     for (ProductRepository productRepositoryIter : productRepositoryInstances) {
       Mockito.when(productRepositoryIter.findById(Matchers.anyInt()))
         .thenAnswer(productRepositoryFindByIdAnswer);
@@ -228,7 +228,7 @@ public class CartControllerTest {
     /* Assert result */
     Assert.assertNotNull(cartItems);
     HashMap<Integer, Integer> hashMap = new HashMap<Integer, Integer>();
-    hashMap.put(7, 1);
+    hashMap.put(0, 3);
     Assert.assertEquals(hashMap, cartItems);
   }
 }
