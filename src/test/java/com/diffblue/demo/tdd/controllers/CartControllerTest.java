@@ -130,6 +130,7 @@ public class CartControllerTest {
     /* Assert result */
     Assert.assertNotNull(cartItems);
     HashMap<Integer, Integer> hashMap = new HashMap<>();
+    hashMap.put(0, 1);
     Assert.assertEquals(hashMap, cartItems);
   }
 }
