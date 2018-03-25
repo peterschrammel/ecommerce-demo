@@ -38,13 +38,17 @@ public class CartController {
 		try {
 			int productId = Integer.parseInt(productParam);
 			Product product = this.productRepo.findById(productId);
-			int newQuantity = 1;
-			Integer found = cartItems.get(product.getId());
-			if (found != null) {
-				newQuantity += found;
-				cartItems.remove(productId);
+			if (product != null) {
+				int newQuantity = 1;
+				Integer found = cartItems.get(product.getId());
+				if (found != null) {
+					newQuantity += found;
+					cartItems.remove(productId);
+				}
+				cartItems.put(productId, newQuantity);
+			} else {
+				throw new IllegalArgumentException("Product id not found: " + productParam);
 			}
-			cartItems.put(productId, newQuantity);
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("Invalid product id: " + productParam);
 		}
