@@ -32,9 +32,11 @@ public class CartController {
 	}
 
 	public void addProductToCart(String productParam,
-	    HashMap<Integer, Integer> cartItems) {
+	    HashMap<Integer, Integer> cartItems) throws IllegalArgumentException {
+		if (productParam == null || cartItems == null)
+			throw new IllegalArgumentException();
 
-	  // TBD now!
+		// TBD now!
 
 	}
 }
